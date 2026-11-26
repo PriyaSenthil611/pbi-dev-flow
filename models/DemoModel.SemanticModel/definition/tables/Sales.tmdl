@@ -71,4 +71,4 @@ table Sales
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
-
+	measure 'Total Amount x2' = SUM(Sales[Amount]) * 2
