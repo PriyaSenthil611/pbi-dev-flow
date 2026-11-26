@@ -1,0 +1,74 @@
+table Sales
+	lineageTag: 84b1e2af-229e-42d8-82e8-ef928889dfc1
+
+	measure 'Total Sales' = SUM(Sales[Amount])
+		formatString: 0
+		lineageTag: fdb3b8e3-4f60-4463-81c7-480ed4dced4b
+
+	measure 'Total Quantity' = SUM(Sales[Quantity])
+		formatString: 0
+		lineageTag: 5a26bc0f-ef0e-43e4-990a-185c727f9914
+
+	measure 'Avg Sale' = DIVIDE([Total Sales], COUNTROWS(Sales))
+		lineageTag: 15cd0e58-0718-499a-ad26-69fd93371916
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5e18ee09-7ecc-4721-b351-769b6ca34c89
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Product
+		dataType: string
+		lineageTag: b75fac90-519b-4a0e-bf04-9bd6a00c64ba
+		summarizeBy: none
+		sourceColumn: Product
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 1ae8eff5-c97c-4231-9aca-bf3ec8ccca85
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: int64
+		formatString: 0
+		lineageTag: 5574821a-0efa-4779-b926-bbc7df6aad6d
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 3e741404-22c2-4618-94bd-804ba9f81f79
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sales = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMjIwMtM1MNQ1MFXSUfJJLCjJLwAy/PKLSjKAtKGRgQGQMlKK1UEoNTRCVuqaWFwCpCzACo1RFBqYA4UCMvLzUoF0eCpYnaEpWKEJkkIjXQNjoFBIYlJOKkhJcH4p2HJLU5BKQ6XYWAA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Date = _t, Product = _t, Region = _t, Amount = _t, Quantity = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Date", type date}, {"Product", type text}, {"Region", type text}, {"Amount", Int64.Type}, {"Quantity", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
