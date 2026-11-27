@@ -14,6 +14,13 @@ table Sales
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure 'Total Amount x2' = SUM(Sales[Amount]) * 2
+		lineageTag: 91a0ad35-9283-4c0a-8b4a-51a733bb4a8f
+
+	measure 'Max Sale' = MAX(Sales[Amount])
+		formatString: 0
+		lineageTag: de9feef5-57c9-44c2-ab2d-a6b3ef447345
+
 	column Date
 		dataType: dateTime
 		formatString: Long Date
@@ -71,4 +78,4 @@ table Sales
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
-	measure 'Total Amount x2' = SUM(Sales[Amount]) * 2
+
